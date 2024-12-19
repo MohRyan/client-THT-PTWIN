@@ -5,7 +5,7 @@ interface IUser {
   name: string;
   email: string;
   gender: string;
-  products: IProduct[] | [];
+  product: IProduct[] | [];
   profile: IProfile | null
 }
 

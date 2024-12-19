@@ -23,7 +23,7 @@ const ProfileNav = () => {
             <b>{name}</b>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <img src={profile?.avatar} className="w-10 h-10 rounded-full" alt="" />
+                    <img src={profile?.avatar} className="w-10 h-10 rounded-full cursor-pointer" alt="" />
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
                     <DropdownMenuGroup>

@@ -1,6 +1,5 @@
 import ProductCard from "@/components/product/product-card"
 import { getProductAll } from "@/lib/api/call/product"
-import { IProduct } from "@/redux/types/state"
 import { useEffect, useState } from "react"
 
 export interface ProductSectionState {
@@ -13,7 +12,7 @@ export interface ProductSectionState {
     description: string;
     sku: string;
     diskon?: number;
-    user: {
+    user?: {
         name: string;
         email: string;
         profile: {
@@ -24,19 +23,33 @@ export interface ProductSectionState {
 
 const ProductSection = () => {
     const [product, setProduct] = useState<ProductSectionState[]>([])
+    const [loading, setLoading] = useState(false)
     const get = async () => {
-        const res = await getProductAll()
-        console.log("🚀 ~ get ~ res:", res)
-        setProduct(res)
+        setLoading(true)
+        try {
+            const res = await getProductAll()
+            setProduct(res)
+
+        } catch (error) {
+            console.log("🚀 ~ get ~ error:", error)
+        } finally {
+            setLoading(false)
+        }
     }
 
     useEffect(() => {
         get()
     }, [])
     return (
-        <section className="grid grid-cols-6 gap-3" id="product">
-            {product!.map((item, index) => (<ProductCard key={index} data={item} />))}
-        </section>
+        <>
+            {loading ? (<div className="flex justify-center">
+                <div className="loader"></div>
+            </div>) :
+                <section className="grid grid-cols-6 gap-3" id="product">
+                    {product!.map((item, index) => (<ProductCard key={index} data={item} />))}
+                </section>
+            }
+        </>
     )
 }
 
