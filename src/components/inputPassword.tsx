@@ -4,7 +4,7 @@ import { Eye, EyeOff } from 'lucide-react'
 import { ControllerRenderProps } from 'react-hook-form';
 
 interface InputPasswordProps {
-    field: ControllerRenderProps<{ name: string; confirmPassword: string; email: string; password: string; }, "confirmPassword" | "password">
+    field: ControllerRenderProps<{ name: string; confirmPassword: string; email: string; password: string; }, "confirmPassword" | "password"> | ControllerRenderProps<{ email: string; password: string; }, "password">
     placeholder: string
 }
 

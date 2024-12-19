@@ -1,22 +1,28 @@
 import { API, setAuthToken } from "@/lib/api";
+import { useCheckToken } from "@/lib/hooks/useCheckToken";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 interface ILoginForm {
-  email?: string;
-  password?: string;
+  email: string;
+  password: string;
 }
 
 export const loginAsync = createAsyncThunk(
-  "/auth/login",
+  "/login",
   async (credentials: ILoginForm, { rejectWithValue }) => {
     try {
-      const response = await API.post("/auth/login", credentials);
+      const response = await API.post("login", credentials);
       const token = response.data.token;
-      const user = response.data.user;
 
       setAuthToken(token);
       localStorage.setItem("token", token);
-      return { token: token, user: user };
+      const resUser = await API.get("user", {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      })
+
+      return resUser.data;
     } catch (error) {
       return rejectWithValue("error");
     }

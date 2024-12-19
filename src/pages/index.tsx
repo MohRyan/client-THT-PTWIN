@@ -1,7 +1,11 @@
 import supabase from "@/lib/supabase";
-import { ChangeEvent } from "react";
-import { jwtDecode } from "jwt-decode";
+import { ChangeEvent, useEffect, useRef } from "react";
 import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
+import { useAppSelector } from "@/redux";
+import Autoplay from "embla-carousel-autoplay"
+import { getProductAll } from "@/lib/api/call/product";
+import hero from "../lib/db/carousel.json";
+import ProductSection from "./section/product-section";
 
 const uploadImage = async (file: File): Promise<string | null> => {
   if (!file) {
@@ -45,25 +49,35 @@ const Home = () => {
     }
   };
 
-  const token = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6Ijk4MTEzMzIxLWU4ZWQtNDczYy1iN2Y1LTc0YjQyMWIxMjdkNiIsImlhdCI6MTczNDU0OTkyOCwiZXhwIjoxNzM0NzIyNzI4fQ.jVYMMPXBNsCXbdbWNnXGbXwgsrpGXeIkD7aAp7FZm9M"
-  const decoded: { id: string } = jwtDecode(token);
-  console.log("🚀 ~ LandingPage ~ decoded:", decoded.id)
+
+
+
+  const plugin: any = useRef<AutoplayPlugin>(
+    Autoplay({ delay: 4000, stopOnInteraction: true })
+  )
+  type AutoplayPlugin = ReturnType<typeof Autoplay>;
+
   return (
     <div className="flex flex-col">
-      <section className="h-screen" id="hero">
-        <Carousel>
+      <section className="flex justify-center py-5" id="hero">
+        <Carousel className="w-full"
+          plugins={[plugin.current]}
+          opts={{
+            align: "start",
+            loop: true,
+          }}
+        >
           <CarouselContent>
-            <CarouselItem>...</CarouselItem>
-            <CarouselItem>...</CarouselItem>
-            <CarouselItem>...</CarouselItem>
+            {hero.map((item, index) => (
+              <CarouselItem key={index}>
+                <img src={item.image} className="object-cover w-full h-[500px] rounded-lg" alt="" />
+              </CarouselItem>
+
+            ))}
           </CarouselContent>
-          <CarouselPrevious />
-          <CarouselNext />
         </Carousel>
       </section>
-      <section className="h-screen" id="hero1">
-        Saya
-      </section>
+      <ProductSection />
       <section className="h-screen" id="hero2">
         Moh
       </section>

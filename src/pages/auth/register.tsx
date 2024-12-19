@@ -15,10 +15,20 @@ import { useNavigate } from "react-router-dom"
 import toast from "react-hot-toast"
 import InputPassword from "@/components/inputPassword"
 import { API } from "@/lib/api"
+import {
+    Select,
+    SelectContent,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from "@/components/ui/select"
 
 const formSchema = z.object({
     name: z.string().min(2).max(50, "Name must be less than 50 characters"),
     email: z.string().email("Invalid email").min(2).max(20),
+    gender: z.string({
+        required_error: "gender is required",
+    }).or(z.literal("PRIA")).or(z.literal("WANITA")),
     password: z.string().min(2).max(20, "Password must be less than 20 characters"),
     confirmPassword: z.string().min(2).max(20, "Password must be less than 20 characters"),
 })
@@ -34,6 +44,7 @@ const Register = () => {
         defaultValues: {
             name: "",
             email: "",
+            gender: undefined,
             password: "",
             confirmPassword: "",
         },
@@ -84,6 +95,27 @@ const Register = () => {
                                     <FormControl>
                                         <Input placeholder="Enter Your Email" {...field} />
                                     </FormControl>
+                                    <FormMessage />
+                                </FormItem>
+                            )}
+                        />
+                        <FormField
+                            control={form.control}
+                            name="gender"
+                            render={({ field }) => (
+                                <FormItem>
+                                    <FormLabel>Gender</FormLabel>
+                                    <Select onValueChange={field.onChange} defaultValue={field.value}>
+                                        <FormControl>
+                                            <SelectTrigger>
+                                                <SelectValue placeholder="Select Gender" />
+                                            </SelectTrigger>
+                                        </FormControl>
+                                        <SelectContent>
+                                            <SelectItem value="PRIA">PRIA</SelectItem>
+                                            <SelectItem value="WANITA">WANITA</SelectItem>
+                                        </SelectContent>
+                                    </Select>
                                     <FormMessage />
                                 </FormItem>
                             )}

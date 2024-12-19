@@ -1,21 +1,30 @@
-import { IUser, IProduct, ICategories, IMainCategories } from "@/types/app";
+import { IProduct, ICategories, IMainCategories } from "@/types/app";
 
-interface IAuthState {
-  isLogin: boolean;
-  token: string;
-  user: IUser;
+interface IUser {
+  id: string;
+  name: string;
+  email: string;
+  gender: string;
+  products: IProduct[] | [];
+  profile: IProfile | null
 }
 
-interface ProductsState {
-  products: IProduct[];
-  categories: ICategories[];
-  searchTerm: string;
-  categoriesId: string;
-  mainCategoriesId: string;
-  minPrice?: number;
-  maxPrice?: number;
-  sortBy: string;
-  sortOrder: "asc" | "desc";
-  loading: boolean;
-  error: string | null;
+interface IProduct {
+  id: string;
+  userId: string;
+  name_product: string;
+  img_product: string;
+  price: number;
+  rating: number;
+  description: string;
+  sku: string;
+  diskon?: number;
+}
+
+interface IProfile {
+  id: string;
+  avatar: string;
+  banner: string
+  bio: string
+  userId: string
 }
