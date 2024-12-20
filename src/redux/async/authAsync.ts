@@ -1,5 +1,4 @@
 import { API, setAuthToken } from "@/lib/api";
-import { useCheckToken } from "@/lib/hooks/useCheckToken";
 import { createAsyncThunk } from "@reduxjs/toolkit";
 
 interface ILoginForm {

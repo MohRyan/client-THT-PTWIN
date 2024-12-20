@@ -14,42 +14,32 @@ import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
 import { ImagePlus } from "lucide-react"
 import React from "react"
-import { useUploadImage } from "@/lib/hooks/useUploadImageSupabase"
-import { API } from "@/lib/api"
 import { useCheckToken } from "@/lib/hooks/useCheckToken"
-import { IProduct } from "@/redux/types/state"
+import { formSchema, IProductProps } from "./form-add-product"
+import toast from "react-hot-toast"
+import { useUpdateImage } from "@/lib/hooks/useUpdateImageProductSupabase"
+import { updateProduct } from "@/lib/api/call/product"
 
-export interface IProductProps {
-    handleDialogClose: () => void,
-    data?: IProduct
-}
-
-export const formSchema = z.object({
-    name_product: z.string().min(10).max(60),
-    price: z.string({
-        required_error: "Price is required",
-    }),
-    description: z.string().min(20).max(300),
-    diskon: z.string().optional(),
-    rating: z.string().min(1).max(5).default("3"),
-})
-const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
+const FormUpdateProduct = ({ handleDialogClose, data }: IProductProps) => {
     const [selectedImageProduct, setSelectedImageProduct] = React.useState<File | null>(null);
-    const form = useForm<z.infer<typeof formSchema>>({
-        resolver: zodResolver(formSchema),
-        defaultValues: {
-            name_product: "",
-            price: "",
-            description: "",
-            diskon: "0",
-            rating: "3",
-
-        },
-    })
-    const [renderedImage, setRenderedImage] = React.useState<string | null>(null);
+    const [renderedImage, setRenderedImage] = React.useState<string | null>(data?.img_product || null);
     const token = localStorage.getItem("token")
     const { checkToken } = useCheckToken()
     const [loading, setLoading] = React.useState<boolean>(false)
+
+
+    const form = useForm<z.infer<typeof formSchema>>({
+        resolver: zodResolver(formSchema),
+        defaultValues: {
+            name_product: data?.name_product || "",
+            price: data?.price?.toString() || "",
+            description: data?.description || "",
+            diskon: data?.diskon?.toString() || "0",
+            rating: data?.rating?.toString() || "3",
+        },
+
+    })
+
     React.useEffect(() => {
         if (!selectedImageProduct) return
         const reader = new FileReader()
@@ -57,30 +47,32 @@ const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
         reader.readAsDataURL(selectedImageProduct)
     }, [selectedImageProduct])
 
-
-
-
     async function onSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true)
-        let image = "https://www.mon-site-bug.fr/uploads/products/default-product.png"
+        let image = ""
         if (selectedImageProduct !== null) {
-            const res = await useUploadImage(selectedImageProduct!)
+            const filePath = data?.img_product.split("/THT-PTWIN/")[1]
+            const res = await useUpdateImage(filePath!, selectedImageProduct)
             image = res!
         }
-        const addProduct = {
-            name_product: values.name_product,
-            img_product: image,
-            price: values.price,
-            description: values.description,
-            diskon: values.diskon,
-            rating: values.rating,
+
+        if (values.name_product === data?.name_product && values.price === data?.price?.toString() && values.description === data?.description && values.diskon === data?.diskon?.toString() && values.rating === data?.rating?.toString() && renderedImage === data?.img_product) {
+            handleDialogClose()
+            return toast('Tidak ada perubahan', {
+                icon: '🤨',
+            })
         }
         try {
-            await API.post("product", addProduct, {
-                headers: {
-                    Authorization: `Bearer ${token}`,
-                }
-            })
+            const newProduct = {
+                name_product: values.name_product,
+                img_product: image === "" ? data?.img_product : image,
+                price: values.price,
+                description: values.description,
+                diskon: values.diskon,
+                rating: values.rating,
+            }
+            await updateProduct(data?.id!, newProduct, token!)
+            toast.success('Update Success')
             checkToken(token!)
             handleDialogClose()
         } catch (error) {
@@ -168,11 +160,11 @@ const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
                     )}
                 />
                 <Button type="submit" disabled={loading}>
-                    {loading ? 'Loading...' : 'Submit'}
+                    {loading ? 'Loading...' : 'Update Product'}
                 </Button>
             </form>
         </Form>
     )
 }
 
-export default FormAddProduct
+export default FormUpdateProduct

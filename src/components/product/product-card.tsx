@@ -26,8 +26,8 @@ const ProductCard = ({ data }: IProductCard) => {
                     <span className="text-2xl ">Rp. {Number(data.price).toLocaleString('id-ID')}</span>
                     :
                     <div className="flex flex-col justify-between">
-                        <span className="text-lg text-gray-400 line-through">Rp. {data.price}</span>
-                        <span className="text-2xl ">Rp. {priceDiskon}</span>
+                        <span className="text-lg text-gray-400 line-through">Rp. {Number(data.price).toLocaleString('id-ID')}</span>
+                        <span className="text-2xl ">Rp. {priceDiskon.toLocaleString('id-ID')}</span>
                     </div>
                 }
                 <div className="flex items-center justify-between gap-2 text-base">
