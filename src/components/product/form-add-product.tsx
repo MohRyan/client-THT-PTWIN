@@ -25,10 +25,10 @@ export interface IProductProps {
 }
 
 export const formSchema = z.object({
-    name_product: z.string().min(10).max(60),
+    name_product: z.string().min(10).max(200),
     price: z.string({
         required_error: "Price is required",
-    }),
+    }).min(2, "Price must be at least 3 Number"),
     description: z.string().min(20).max(300),
     diskon: z.string().optional(),
     rating: z.string().min(1).max(5).default("3"),
@@ -50,6 +50,7 @@ const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
     const token = localStorage.getItem("token")
     const { checkToken } = useCheckToken()
     const [loading, setLoading] = React.useState<boolean>(false)
+
     React.useEffect(() => {
         if (!selectedImageProduct) return
         const reader = new FileReader()
@@ -168,7 +169,7 @@ const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
                     )}
                 />
                 <Button type="submit" disabled={loading}>
-                    {loading ? 'Loading...' : 'Submit'}
+                    {loading ? 'Loading...' : 'Add'}
                 </Button>
             </form>
         </Form>

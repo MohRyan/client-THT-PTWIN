@@ -9,21 +9,21 @@ import {
 } from "@/components/ui/dropdown-menu"
 import { Link, useNavigate } from "react-router-dom"
 
-const ProfileNav = () => {
-    const { name, profile } = useAppSelector(state => state.auth.user)
+const ProfileNav = ({ setIsToken }: { setIsToken: React.Dispatch<React.SetStateAction<null | string>> }) => {
+    const { name, profile, gender } = useAppSelector(state => state.auth.user)
     const navigate = useNavigate()
 
     function handleLogout() {
         localStorage.removeItem('token');
-        window.location.reload();
-        navigate('/')
+        navigate('/profile')
+        setIsToken(null)
     }
     return (
         <div className="flex items-center gap-3">
             <b>{name}</b>
             <DropdownMenu>
                 <DropdownMenuTrigger asChild>
-                    <img src={profile?.avatar} className="w-10 h-10 rounded-full cursor-pointer" alt="" />
+                    {profile?.avatar ? <img src={profile?.avatar} className="w-10 h-10 rounded-full cursor-pointer" alt="" /> : gender === "PRIA" ? <div className="man-pilot"></div> : <div className="woman-pilot"></div>}
                 </DropdownMenuTrigger>
                 <DropdownMenuContent className="w-56">
                     <DropdownMenuGroup>

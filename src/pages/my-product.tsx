@@ -29,17 +29,21 @@ const MyProduct = () => {
     return (
         <div>
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
-                <DialogTrigger className="flex items-center justify-center p-3 my-4 bg-white rounded-full shadow-xl"><PackagePlus /></DialogTrigger>
+                <DialogTrigger className="flex items-center justify-center gap-5 p-3 px-5 my-4 bg-white shadow-xl hover:bg-blue-200 rounded-2xl"><PackagePlus /> <b>Add Product</b></DialogTrigger>
                 <DialogContent >
                     <DialogHeader>
-                        <DialogTitle className="py-6">Add Product</DialogTitle>
+                        <DialogTitle className="py-6 text-3xl">Add Product</DialogTitle>
                         <FormAddProduct handleDialogClose={handleDialogClose} />
                     </DialogHeader>
                 </DialogContent>
             </Dialog>
             <div className="grid grid-cols-6 gap-3" id="product">
-                {product &&
+                {product.length > 0 ?
                     product.map((item, index) => (<ProductCardWithToken key={index} data={item} />))
+                    :
+                    <div className="flex justify-center col-span-6 text-black min-h-96">
+                        <b className="text-3xl">No Product</b>
+                    </div>
                 }
             </div>
         </div>

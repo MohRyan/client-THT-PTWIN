@@ -51,11 +51,11 @@ const Register = () => {
     })
 
     async function onSubmit(values: z.infer<typeof formSchema>) {
-        console.log("🚀 ~ onSubmit ~ values:", values)
         const valueRegister = {
             name: values.name,
             email: values.email,
-            password: values.password
+            password: values.password,
+            gender: values.gender
         }
         try {
             await API.post("register", valueRegister)

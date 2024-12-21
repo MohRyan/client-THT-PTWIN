@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import ProfileNav from "../profile";
 import { Button } from "../ui/button";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { X } from "lucide-react";
 import { z } from "zod";
 import { useForm } from "react-hook-form";
@@ -39,6 +39,17 @@ const Login = () => {
   })
   const token = localStorage.getItem('token');
   const { checkToken } = useCheckToken()
+  const [isToken, setIsToken] = useState<string | null>(token || null)
+  useEffect(() => {
+    if (token) {
+      setIsToken(token)
+    } else {
+      setIsToken(null)
+      setToggle(false)
+      form.setValue('email', '')
+      form.setValue('password', '')
+    }
+  }, [token])
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     setLoading(true)
@@ -58,8 +69,8 @@ const Login = () => {
   }
   return (
     <div className="">
-      {token ?
-        <ProfileNav />
+      {isToken ?
+        <ProfileNav setIsToken={setIsToken} />
         :
         <div className="flex gap-3">
           {toggle ?

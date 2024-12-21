@@ -20,26 +20,30 @@ const ProductCardWithToken = ({ data }: { data: IProduct }) => {
     const priceDiskon = data.price - (data.price * data.diskon! / 100)
     const token = localStorage.getItem('token')
     const { checkToken } = useCheckToken()
-    const [isOpen, setIsOpen] = useState<boolean>(false);
+    const [isOpenDelete, setIsOpenDelete] = useState<boolean>(false);
+    const [isOpenEdit, setIsOpenEdit] = useState<boolean>(false);
 
-    const handleDialogClose = () => setIsOpen(false);
+    const handleDialogCloseDelete = () => setIsOpenDelete(false);
+    const handleDialogCloseEdit = () => setIsOpenEdit(false);
     async function handleDeleteProduct() {
         await deleteProduct(data.id, token!)
         if (data.img_product.includes("THT-PTWIN")) {
             await useDeleteImageProduct(data.img_product.split("/THT-PTWIN/")[1])
         }
+        handleDialogCloseDelete()
         checkToken(token!)
     }
     return (
-        <div className="flex flex-col justify-between col-span-6 p-4 border border-gray-300 rounded-lg md:col-span-2 lg:col-span-1">
-            <div className="flex relative h-[50%] w-[100%] min-h-52 rounded-t-lg bg-cover" style={{ backgroundImage: `url('${data.img_product}')` }}>
-                {data.diskon &&
+        <div className="flex flex-col col-span-6 p-4 border border-gray-300 rounded-lg md:col-span-2 lg:col-span-1">
+            <div className="flex relative w-[100%] h-52 rounded-t-lg bg-cover bg-center hover:scale-105 cursor-pointer duration-300" style={{ backgroundImage: `url('${data.img_product}')` }}>
+                {data.diskon !== 0 ?
                     <div className="z-0 w-full text-black bg-red-400 card-product-clip">
                         <b className="absolute z-20 text-white -rotate-45 top-1.5 left-0.5">{data.diskon}%</b>
                     </div>
+                    : ''
                 }
-                <div className="absolute flex items-center gap-2 -top-2 -right-2">
-                    <Dialog>
+                <div className="absolute flex items-center gap-2 duration-300 -top-2 -right-2">
+                    <Dialog open={isOpenDelete} onOpenChange={setIsOpenDelete}>
                         <DialogTrigger className="p-2 bg-white rounded-full hover:text-red-500"><Trash2 /></DialogTrigger>
                         <DialogContent className="max-w-lg">
                             <DialogHeader>
@@ -56,20 +60,20 @@ const ProductCardWithToken = ({ data }: { data: IProduct }) => {
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
-                    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+                    <Dialog open={isOpenEdit} onOpenChange={setIsOpenEdit}>
                         <DialogTrigger className="flex items-center justify-center p-2 bg-white rounded-full shadow-xl"><Pencil /></DialogTrigger>
                         <DialogContent >
                             <DialogHeader>
                                 <DialogTitle className="py-6">Edit Product</DialogTitle>
-                                <FormUpdateProduct handleDialogClose={handleDialogClose} data={data} />
+                                <FormUpdateProduct handleDialogClose={handleDialogCloseEdit} data={data} />
                             </DialogHeader>
                         </DialogContent>
                     </Dialog>
                 </div>
             </div>
             <div className="flex flex-col gap-4 mt-2">
-                <b className="line-clamp-2">{data.name_product}</b>
-                {data.diskon === null ?
+                <b className="text-xl line-clamp-2">{data.name_product}</b>
+                {data.diskon !== null && data.diskon === 0 ?
                     <span className="text-2xl ">Rp. {Number(data.price).toLocaleString('id-ID')}</span>
                     :
                     <div className="flex flex-col justify-between">

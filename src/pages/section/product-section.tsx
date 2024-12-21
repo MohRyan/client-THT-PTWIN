@@ -15,6 +15,7 @@ export interface ProductSectionState {
     user?: {
         name: string;
         email: string;
+        gender: string;
         profile: {
             avatar: string;
         }

@@ -1,57 +1,9 @@
-import supabase from "@/lib/supabase";
-import { ChangeEvent, useEffect, useRef } from "react";
-import { Carousel, CarouselContent, CarouselItem, CarouselNext, CarouselPrevious } from "@/components/ui/carousel";
-import { useAppSelector } from "@/redux";
+import { useRef } from "react";
+import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay"
-import { getProductAll } from "@/lib/api/call/product";
 import hero from "../lib/db/carousel.json";
 import ProductSection from "./section/product-section";
-
-const uploadImage = async (file: File): Promise<string | null> => {
-  if (!file) {
-    console.error("No file selected!");
-    return null;
-  }
-
-  const filePath = `uploads-${Date.now()}_${file.name}`; // Unique file path
-
-  try {
-    const { data, error } = await supabase.storage
-      .from('THT-PTWIN') // Replace with your bucket name
-      .upload(filePath, file);
-
-    if (error) {
-      console.error("Upload failed:", error.message);
-      return null;
-    }
-
-    console.log("File uploaded successfully:", data);
-
-    // Get public URL
-    const { data: publicData } = supabase.storage
-      .from('THT-PTWIN')
-      .getPublicUrl(filePath);
-
-    console.log("Public URL:", publicData.publicUrl);
-    return publicData.publicUrl;
-  } catch (err) {
-    console.error("Unexpected error during upload:", err);
-    return null;
-  }
-};
 const Home = () => {
-
-  const handleFileChange = async (e: ChangeEvent<HTMLInputElement>): Promise<void> => {
-    const file = e.target.files?.[0];
-    if (file) {
-      const url = await uploadImage(file);
-      console.log("Uploaded File URL:", url);
-    }
-  };
-
-
-
-
   const plugin: any = useRef<AutoplayPlugin>(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   )
@@ -59,7 +11,7 @@ const Home = () => {
 
   return (
     <div className="flex flex-col">
-      <section className="flex justify-center py-5" id="hero">
+      <section className="flex justify-center py-5" >
         <Carousel className="w-full"
           plugins={[plugin.current]}
           opts={{
@@ -78,12 +30,6 @@ const Home = () => {
         </Carousel>
       </section>
       <ProductSection />
-      <section className="h-screen" id="hero2">
-        Moh
-      </section>
-      <section className="h-screen" id="hero3">
-        Ryan
-      </section>
     </div>
   );
 };
