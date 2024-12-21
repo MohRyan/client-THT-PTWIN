@@ -1,6 +1,5 @@
 /** @type {import('tailwindcss').Config} */
-// eslint-disable-next-line no-undef
-module.exports = {
+export default {
   darkMode: ["class"],
   content: [
     "./pages/**/*.{ts,tsx}",
@@ -8,14 +7,12 @@ module.exports = {
     "./app/**/*.{ts,tsx}",
     "./src/**/*.{ts,tsx}",
   ],
-  prefix: "",
   theme: {
     debugScreens: {
-      position: ['bottom', 'left'],
+      position: ["bottom", "left"],
       style: {
-        backgroundColor: '#C0FFEE',
-        color: 'black',
-        // ...
+        backgroundColor: "#C0FFEE",
+        color: "black",
       },
     },
     container: {
@@ -29,12 +26,9 @@ module.exports = {
       colors: {
         first: "#3B3A5D",
         second: "#FFBB50",
-
         content: "#8F8F8F",
-
         link: "#B16642",
         borderCustom: "#c78a6c",
-
         border: "hsl(var(--border))",
         input: "hsl(var(--input))",
         ring: "hsl(var(--ring))",
@@ -90,9 +84,8 @@ module.exports = {
       },
     },
   },
-  // eslint-disable-next-line no-undef
   plugins: [
     require("tailwindcss-animate"),
-    require('tailwindcss-debug-screens')
+    require("tailwindcss-debug-screens"),
   ],
 };
