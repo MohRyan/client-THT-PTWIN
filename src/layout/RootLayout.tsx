@@ -13,11 +13,11 @@ const RootLayout = () => {
   });
   const token = localStorage.getItem("token");
   const { checkToken } = useCheckToken();
-  if (token) {
-    useEffect(() => {
+  useEffect(() => {
+    if (token) {
       checkToken(token);
-    }, []);
-  }
+    }
+  }, [token]);
   return (
     <div className="container p-0">
       <Header />

@@ -3,7 +3,7 @@ import StarRating from "../start-rating"
 import { IProduct } from "@/redux/types/state"
 import { deleteProduct } from "@/lib/api/call/product"
 import { useCheckToken } from "@/lib/hooks/useCheckToken"
-import { useDeleteImageProduct } from "@/lib/hooks/useDeleteImageProductSupabase"
+import { UseDeleteImageProduct } from "@/lib/hooks/useDeleteImageProductSupabase"
 import {
     Dialog,
     DialogContent,
@@ -28,7 +28,7 @@ const ProductCardWithToken = ({ data }: { data: IProduct }) => {
     async function handleDeleteProduct() {
         await deleteProduct(data.id, token!)
         if (data.img_product.includes("THT-PTWIN")) {
-            await useDeleteImageProduct(data.img_product.split("/THT-PTWIN/")[1])
+            await UseDeleteImageProduct(data.img_product.split("/THT-PTWIN/")[1])
         }
         handleDialogCloseDelete()
         checkToken(token!)

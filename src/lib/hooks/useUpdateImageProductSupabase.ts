@@ -1,6 +1,6 @@
 import supabase from "../supabase";
 
-export const useUpdateImage = async (filePath: string, newFile: File): Promise<string | null> => {
+export const UseUpdateImage = async (filePath: string, newFile: File): Promise<string | null> => {
     if (!filePath || !newFile) {
         console.error("File path and new file are required!");
         return null;

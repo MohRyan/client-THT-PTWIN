@@ -3,11 +3,15 @@ import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carouse
 import Autoplay from "embla-carousel-autoplay"
 import hero from "../lib/db/carousel.json";
 import ProductSection from "./section/product-section";
+
+type AutoplayPlugin = {
+  stop: () => void;
+  reset: () => void;
+};
 const Home = () => {
   const plugin: any = useRef<AutoplayPlugin>(
     Autoplay({ delay: 4000, stopOnInteraction: true })
   )
-  type AutoplayPlugin = ReturnType<typeof Autoplay>;
 
   return (
     <div className="flex flex-col">

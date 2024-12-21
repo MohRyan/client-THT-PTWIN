@@ -1,6 +1,6 @@
 import supabase from "../supabase";
 
-export const useDeleteImageProduct = async (filePath: string): Promise<boolean> => {
+export const UseDeleteImageProduct = async (filePath: string): Promise<boolean> => {
     if (!filePath) {
         console.error("File path is required!");
         return false;

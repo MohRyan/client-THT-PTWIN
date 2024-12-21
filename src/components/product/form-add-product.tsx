@@ -14,7 +14,7 @@ import { Button } from "../ui/button"
 import { Textarea } from "../ui/textarea"
 import { ImagePlus } from "lucide-react"
 import React from "react"
-import { useUploadImage } from "@/lib/hooks/useUploadImageSupabase"
+import { UseUploadImage } from "@/lib/hooks/useUploadImageSupabase"
 import { API } from "@/lib/api"
 import { useCheckToken } from "@/lib/hooks/useCheckToken"
 import { IProduct } from "@/redux/types/state"
@@ -61,11 +61,11 @@ const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
 
 
 
-    async function onSubmit(values: z.infer<typeof formSchema>) {
+    async function OnSubmit(values: z.infer<typeof formSchema>) {
         setLoading(true)
         let image = "https://www.mon-site-bug.fr/uploads/products/default-product.png"
         if (selectedImageProduct !== null) {
-            const res = await useUploadImage(selectedImageProduct!)
+            const res = await UseUploadImage(selectedImageProduct!)
             image = res!
         }
         const addProduct = {
@@ -92,7 +92,7 @@ const FormAddProduct = ({ handleDialogClose }: IProductProps) => {
     }
     return (
         <Form {...form}>
-            <form onSubmit={form.handleSubmit(onSubmit)} className="grid items-start grid-cols-3 gap-6">
+            <form onSubmit={form.handleSubmit(OnSubmit)} className="grid items-start grid-cols-3 gap-6">
                 <label htmlFor="img-product" className="flex items-center justify-center row-span-2 bg-center bg-cover border border-gray-300 rounded-lg max-w-52 min-h-52" style={{ backgroundImage: `url('${renderedImage}')` }}>
                     {!renderedImage &&
                         <ImagePlus size={40} />

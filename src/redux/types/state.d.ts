@@ -1,4 +1,4 @@
-import { IProduct, ICategories, IMainCategories } from "@/types/app";
+import { IProduct } from "@/types/app";
 
 interface IUser {
   id: string;

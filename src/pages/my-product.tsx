@@ -17,14 +17,13 @@ const MyProduct = () => {
     const { checkToken } = useCheckToken()
     const token = localStorage.getItem('token')
     const [isOpen, setIsOpen] = useState<boolean>(false);
-
     const handleDialogClose = () => setIsOpen(false);
     useEffect(() => {
         function check() {
             checkToken(token!)
         }
         check()
-    }, [])
+    }, [token])
 
     return (
         <div>

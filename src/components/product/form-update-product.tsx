@@ -17,7 +17,7 @@ import React from "react"
 import { useCheckToken } from "@/lib/hooks/useCheckToken"
 import { formSchema, IProductProps } from "./form-add-product"
 import toast from "react-hot-toast"
-import { useUpdateImage } from "@/lib/hooks/useUpdateImageProductSupabase"
+import { UseUpdateImage } from "@/lib/hooks/useUpdateImageProductSupabase"
 import { updateProduct } from "@/lib/api/call/product"
 
 const FormUpdateProduct = ({ handleDialogClose, data }: IProductProps) => {
@@ -52,7 +52,7 @@ const FormUpdateProduct = ({ handleDialogClose, data }: IProductProps) => {
         let image = ""
         if (selectedImageProduct !== null) {
             const filePath = data?.img_product.split("/THT-PTWIN/")[1]
-            const res = await useUpdateImage(filePath!, selectedImageProduct)
+            const res = await UseUpdateImage(filePath!, selectedImageProduct)
             image = res!
         }
 
@@ -71,7 +71,7 @@ const FormUpdateProduct = ({ handleDialogClose, data }: IProductProps) => {
                 diskon: values.diskon,
                 rating: values.rating,
             }
-            await updateProduct(data?.id!, newProduct, token!)
+            await updateProduct(data!.id!, newProduct, token!)
             toast.success('Update Success')
             checkToken(token!)
             handleDialogClose()

@@ -13,7 +13,7 @@ import {
 import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
-import { useUploadImage } from "@/lib/hooks/useUploadImageSupabase";
+import { UseUploadImage } from "@/lib/hooks/useUploadImageSupabase";
 import { insertProfile } from "@/lib/api/call/profile";
 import { useCheckToken } from "@/lib/hooks/useCheckToken";
 import toast from "react-hot-toast";
@@ -58,12 +58,12 @@ const FormProfile = ({ handleDialogClose, profile }: { handleDialogClose: () => 
         setLoading(true)
         let avatar = ""
         if (selectedAvatar !== null) {
-            const resAvatar = await useUploadImage(selectedAvatar!)
+            const resAvatar = await UseUploadImage(selectedAvatar!)
             avatar = resAvatar!
         }
         let banner = ""
         if (selectedBanner !== null) {
-            const resBanner = await useUploadImage(selectedBanner!)
+            const resBanner = await UseUploadImage(selectedBanner!)
             banner = resBanner!
         }
 

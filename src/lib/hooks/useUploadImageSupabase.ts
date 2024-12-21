@@ -1,6 +1,6 @@
 import supabase from "@/lib/supabase";
 
-export const useUploadImage = async (file: File): Promise<string | null> => {
+export const UseUploadImage = async (file: File): Promise<string | null> => {
     if (!file) {
         console.error("No file selected!");
         return null;
